@@ -1,4 +1,5 @@
-;;; Newton's method applied to calculate cube roots
+;;; Newton's method applied to calculate cube roots, by the given formula in the
+;;; book, with the improved good-enough? created for exercise 1.7
 
 (define (cube-root-iter guess x)
   (if (good-enough? guess x)
