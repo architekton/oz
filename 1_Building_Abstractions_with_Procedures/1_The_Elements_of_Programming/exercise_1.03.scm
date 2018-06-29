@@ -1,5 +1,5 @@
-;;; Create a procedure that takes 3 numbers and returns the sum of squares of
-;;; the two larger ones.
+; Create a procedure that takes 3 numbers and returns the sum of squares of
+; the two larger ones.
 
 (define (square x) (* x x))
 

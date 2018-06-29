@@ -1,4 +1,4 @@
-;;; https://en.wikipedia.org/wiki/Ackermann_function
+; https://en.wikipedia.org/wiki/Ackermann_function
 
 (define (A x y)
   (cond ((= y 0) 0)
@@ -11,12 +11,12 @@
 (A 2 4)
 (A 3 3)
 
-;; f(n) = 2n
+; f(n) = 2n
 (define (f n) (A 0 n))
 
-;; g(n) = 2^n
+; g(n) = 2^n
 (define (g n) (A 1 n))
 
-;; h(n) = 2 raised to itself n - 1 times i.e:
-;; for n = 3, 2^2^2
+; h(n) = 2^^n or using notation defined in the wiki page below.
+; https://en.wikipedia.org/wiki/Tetration
 (define (h n) (A 2 n))
