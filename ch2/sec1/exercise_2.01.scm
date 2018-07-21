@@ -3,12 +3,12 @@
 
 (define (gcd a b)
   (if (= b 0)
-	  a
-	  (gcd b (remainder a b))))
+      a
+      (gcd b (remainder a b))))
 
 (define (make-rat n d)
   (let ((g (abs (gcd n d))))
-	(cons ((if (< (* n d) 0) - +) (abs (/ n g))) (abs (/ d g)))))
+    (cons ((if (< (* n d) 0) - +) (abs (/ n g))) (abs (/ d g)))))
 
 
 (define (print-rat x)

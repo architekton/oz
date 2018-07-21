@@ -4,9 +4,9 @@
 
 (define (find-exponent d n)
   (define (iter result n)
-	(if (= 0 (remainder n d))
-		(iter (+ 1 result ) (/ n d))
-		result))
+    (if (= 0 (remainder n d))
+        (iter (+ 1 result ) (/ n d))
+        result))
 
   (iter 0 n))
 

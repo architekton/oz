@@ -12,8 +12,8 @@
 
 (define (midpoint-segment segment)
   (make-point
-	(/ (x-point (start-segment segment)) (x-point (start-segment segment)) 2)
-	(/ (y-point (end-segment segment)) (y-point (end-segment segment)) 2)))
+    (/ (x-point (start-segment segment)) (x-point (start-segment segment)) 2)
+    (/ (y-point (end-segment segment)) (y-point (end-segment segment)) 2)))
 
 (define (print-point p)
   (newline)

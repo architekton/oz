@@ -8,7 +8,7 @@
 
 (define (sum-of-square-largest-two x y z)
   (cond ((and (< x y) (< x z)) (sum-of-squares y z))
-		((and (< y x) (< y z)) (sum-of-squares x z))
-		((and (< z x) (< z y)) (sum-of-squares y x))))
+        ((and (< y x) (< y z)) (sum-of-squares x z))
+        ((and (< z x) (< z y)) (sum-of-squares y x))))
 
 (sum-of-square-largest-two 3 1 5)

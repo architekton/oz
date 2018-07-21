@@ -1,14 +1,14 @@
 ; A
 ;(define (+ a b)
 ;  (if (= a 0)
-;	  b
-;	  (inc (+ (dec a) b))))
+;     b
+;     (inc (+ (dec a) b))))
 ;
 ; B
 ;(define (+ a b)
 ;  (if (= a 0)
-;	  b
-;	  (+ (dec a) (inc b))))
+;     b
+;     (+ (dec a) (inc b))))
 
 ; (+ 4 5)
 

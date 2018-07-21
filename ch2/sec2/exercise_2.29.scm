@@ -22,21 +22,21 @@
 ; b)
 (define (total-weight mobile)
   (if (null? mobile)
-	  0
-	  (if (pair? mobile)
-		  (+ (total-weight (branch-structure (left-branch mobile)))
-			 (total-weight (branch-structure (right-branch mobile))))
-		  mobile)))
+      0
+      (if (pair? mobile)
+          (+ (total-weight (branch-structure (left-branch mobile)))
+             (total-weight (branch-structure (right-branch mobile))))
+          mobile)))
 
 
 ; c)
 (define (mobile-balanced? mobile)
   (if (pair? mobile)
-	  (= (* (total-weight (branch-structure (left-branch mobile)))
-			(branch-length (left-branch mobile)))
-		 (* (total-weight (branch-structure (right-branch mobile)))
-			(branch-length (right-branch mobile))))
-	  #t))
+      (= (* (total-weight (branch-structure (left-branch mobile)))
+            (branch-length (left-branch mobile)))
+         (* (total-weight (branch-structure (right-branch mobile)))
+            (branch-length (right-branch mobile))))
+      #t))
 
 
 (define x (make-mobile (make-branch 5 10) (make-branch 5 10)))

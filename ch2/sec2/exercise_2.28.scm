@@ -4,10 +4,10 @@
 
 (define (fringe tree)
   (if (null? tree)
-	  nil
-	  (if (pair? (car tree))
-		  (append (car tree) (fringe (cdr tree)))
-		  (cons (car tree) (fringe (cdr tree))))))
+      nil
+      (if (pair? (car tree))
+          (append (car tree) (fringe (cdr tree)))
+          (cons (car tree) (fringe (cdr tree))))))
 
 
 (fringe x)

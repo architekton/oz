@@ -36,7 +36,7 @@
 ; Answer: 6
 
 ; (* (cond ((> a b) a)
-; 	 ((< a b) b)
-; 	 (else -1))
+;    ((< a b) b)
+;    (else -1))
 ;    (+ a 1))
 ; Answer: 16

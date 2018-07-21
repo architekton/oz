@@ -3,9 +3,9 @@
 
 (define (cube-root-iter guess x)
   (if (good-enough? guess x)
-	  guess
-	  (cube-root-iter (improve guess x)
-				 x)))
+      guess
+      (cube-root-iter (improve guess x)
+                 x)))
 
 (define (improve guess x)
  (/ (+ (/ x (square guess)) (* 2 guess)) 3))

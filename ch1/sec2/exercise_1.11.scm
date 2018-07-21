@@ -1,9 +1,9 @@
 (define (rec-process n) 
   (if (< n 3) 
-	  n
-	  (+ (rec-process (- n 1))
-		 (* 2 (rec-process (- n 2)))
-		 (* 3 (rec-process (- n 3))))))
+      n
+      (+ (rec-process (- n 1))
+         (* 2 (rec-process (- n 2)))
+         (* 3 (rec-process (- n 3))))))
 
 (rec-process 0)
 (rec-process 1)
@@ -15,9 +15,9 @@
 
 (define (iter-process n)
   (define (iter a b c count)
-	(if (= count 0)
-		a
-		(iter b c (+ c (* 2 b) (* 3 a)) (- count 1))))
+    (if (= count 0)
+        a
+        (iter b c (+ c (* 2 b) (* 3 a)) (- count 1))))
 
   (iter 0 1 2 n))
 

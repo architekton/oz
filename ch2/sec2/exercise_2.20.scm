@@ -1,11 +1,11 @@
 (define (same-parity x . rest)
   (define (iter matches-parity? lst result)
-	(if (null? lst)
-		(reverse result)
-		(iter matches-parity? (cdr lst)
-			  (if (matches-parity? (car lst))
-				  (cons (car lst) result)
-				  result))))
+    (if (null? lst)
+        (reverse result)
+        (iter matches-parity? (cdr lst)
+              (if (matches-parity? (car lst))
+                  (cons (car lst) result)
+                  result))))
 
   (iter (if (even? x) even? odd?) rest (list x)))
 

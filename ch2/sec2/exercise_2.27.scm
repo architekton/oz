@@ -4,12 +4,12 @@
 
 (define (reverse lst)
   (define (reverse-iter lst result)
-	(if (null? lst)
-		result
-		(reverse-iter (cdr lst) (cons (if (pair? (car lst))
-										  (reverse (car lst))
-										  (car lst))
-									  result))))
+    (if (null? lst)
+        result
+        (reverse-iter (cdr lst) (cons (if (pair? (car lst))
+                                          (reverse (car lst))
+                                          (car lst))
+                                      result))))
 
   (reverse-iter lst '()))
 

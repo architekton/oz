@@ -12,14 +12,14 @@
 
 (define (length-segment segment)
   (let ((s (start-segment segment))
-		(e (end-segment segment)))
-	(let ((x1 (x-point s))
-		  (x2 (x-point e))
-		  (y1 (y-point s))
-		  (y2 (y-point e)))
-	  (sqrt (+ (square (- x1 x2))
-			   (square (- y1 y2))))	  
-	  )))
+        (e (end-segment segment)))
+    (let ((x1 (x-point s))
+          (x2 (x-point e))
+          (y1 (y-point s))
+          (y2 (y-point e)))
+      (sqrt (+ (square (- x1 x2))
+               (square (- y1 y2))))   
+      )))
 
 
 
@@ -36,18 +36,18 @@
 
 
 (per-rect (make-rect (make-segment
-					   (make-point 0 0)
-					   (make-point 2 0))
-					 (make-segment 
-					   (make-point 0 0)
-					   (make-point 0 6))))
+                       (make-point 0 0)
+                       (make-point 2 0))
+                     (make-segment 
+                       (make-point 0 0)
+                       (make-point 0 6))))
 
 
 (area-rect (make-rect (make-segment
-						(make-point 0 0)
-						(make-point 2 0))
-					  (make-segment 
-						(make-point 0 0)
-						(make-point 0 6))))
+                        (make-point 0 0)
+                        (make-point 2 0))
+                      (make-segment 
+                        (make-point 0 0)
+                        (make-point 0 6))))
 
 ; TODO

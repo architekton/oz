@@ -5,8 +5,8 @@
 
 (define (sign lower upper)
   (cond ((and (> lower 0) (> upper 0)) 1)
-		((and (< lower 0) (< upper 0)) -1)
-		(else 0)))
+        ((and (< lower 0) (< upper 0)) -1)
+        (else 0)))
 
 
 ; TODO

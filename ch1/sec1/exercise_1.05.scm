@@ -6,7 +6,7 @@
 (test 0 (p))
 
 ; What is the observation with - applicative-order evaluation
-;								- normal-order evaluation
+;                               - normal-order evaluation
 ;
 ; Applicative-order:
 ; Infinite recursion since p evaluates to itself

@@ -3,8 +3,8 @@
 
 (define (find-divisor n test-divisor)
   (cond ((> (square test-divisor) n) n)
-		((divides? test-divisor n) test-divisor)
-		(else (find-divisor n (+ test-divisor 1)))))
+        ((divides? test-divisor n) test-divisor)
+        (else (find-divisor n (+ test-divisor 1)))))
 
 (define (divides? a b)
   (= (remainder b a) 0))
@@ -19,7 +19,7 @@
 
 (define (start-prime-test n start-time)
   (if (prime? n)
-	  (report-prime (- (runtime) start-time))))
+      (report-prime (- (runtime) start-time))))
 
 (define (report-prime elapsed-time)
   (display " *** ")
@@ -27,12 +27,12 @@
 
 (define (search-for-primes a b)
   (define (prime-iter n)
-	(if (<= n b) (timed-prime-test n))
-	(if (<= n b) (prime-iter (+ 2 n))))
+    (if (<= n b) (timed-prime-test n))
+    (if (<= n b) (prime-iter (+ 2 n))))
 
   (prime-iter (if (even? a)
-				  (+ a 1)
-				  a)))
+                  (+ a 1)
+                  a)))
 
 (search-for-primes 1000 1500)
 (search-for-primes 10000 10500)
