@@ -34,14 +34,27 @@
 
 ; Selectors
 (define (addend s) (cadr s))
-(define (augend s) (caddr s))
+(define (augend s)
+  (let ((first (caddr s))
+        (rest (cdddr s)))
+    (if (null? rest)
+        first
+        (make-sum first (car rest)))))
+
 
 (define (multiplier p) (cadr p))
-(define (multiplicand p) (caddr p))
+(define (multiplicand p)
+  (let ((first (caddr p))
+        (rest (cdddr p)))
+    (if (null? rest)
+        first
+        (make-product first (car rest)))))
+
 
 (define (base e) (cadr e))
 (define (exponent e) (caddr e))
 
+; Deriv
 (define (deriv exp var)
   (cond ((number? exp) 0)
         ((variable? exp)
@@ -65,6 +78,8 @@
         (else
           (error "unknown expression type -- DERIV" exp))))
 
+
+(deriv '(* x y (+ x 3)) 'x)
 
 (deriv '(** x 4) 'x)
 (deriv '(** u n) 'u)
