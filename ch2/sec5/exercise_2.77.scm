@@ -1,3 +1,10 @@
+(load "common.scm")
+
+(put 'real-part '(complex) real-part)
+(put 'imag-part '(complex) imag-part)
+(put 'magnitude '(complex) magnitude)
+(put 'angle '(complex) angle)
+
 (magnitude (make-complex-from-real-imag 3 4))
 
 ; apply-generic is called 2 times, dispatching for each tagged layer until
