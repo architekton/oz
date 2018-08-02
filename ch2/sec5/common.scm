@@ -95,7 +95,7 @@
   'done)
 
 (define (install-rectangular-package)
-  ;; internal procedures
+  ; internal procedures
   (define (real-part z) (car z))
   (define (imag-part z) (cdr z))
   (define (make-from-real-imag x y) (cons x y))
@@ -107,7 +107,7 @@
   (define (make-from-mag-ang r a)
     (cons (* r (cos a)) (* r (sin a))))
 
-  ;; interface to the rest of the system
+  ; interface to the rest of the system
   (define (tag x) (attach-tag 'rectangular x))
   (put 'real-part '(rectangular) real-part)
   (put 'imag-part '(rectangular) imag-part)
@@ -122,7 +122,7 @@
 ;------
 
 (define (install-polar-package)
-  ;; internal procedures
+  ; internal procedures
   (define (magnitude z) (car z))
   (define (angle z) (cdr z))
   (define (make-from-mag-ang r a) (cons r a))
@@ -134,7 +134,7 @@
     (cons (sqrt (+ (square x) (square y)))
           (atan y x)))
 
-  ;; interface to the rest of the system
+  ; interface to the rest of the system
   (define (tag x) (attach-tag 'polar x))
   (put 'real-part '(polar) real-part)
   (put 'imag-part '(polar) imag-part)
@@ -149,7 +149,7 @@
 ;------
 
 (define (install-rational-package)
-  ;; internal procedures
+  ; internal procedures
   (define (numer x) (car x))
   (define (denom x) (cdr x))
   (define (make-rat n d)
@@ -169,7 +169,7 @@
   (define (div-rat x y)
     (make-rat (* (numer x) (denom y))
               (* (denom x) (numer y))))
-  ;; interface to rest of the system
+  ; interface to rest of the system
   (define (tag x) (attach-tag 'rational x))
   (put 'add '(rational rational)
        (lambda (x y) (tag (add-rat x y))))
@@ -187,11 +187,11 @@
 ;------
 
 (define (install-complex-package)
-  ;; imported procedures from rectangular and polar packages
+  ; imported procedures from rectangular and polar packages
   (define (make-from-real-imag x y)
     ((get 'make-from-real-imag 'rectangular) x y))
   (define (make-from-mag-ang r a) ((get 'make-from-mag-ang 'polar) r a))
-  ;; internal procedures
+  ; internal procedures
   (define (add-complex z1 z2)
     (make-from-real-imag (+ (real-part z1) (real-part z2))
                          (+ (imag-part z1) (imag-part z2))))
@@ -205,7 +205,7 @@
     (make-from-mag-ang (/ (magnitude z1) (magnitude z2))
                        (- (angle z1) (angle z2))))
 
-  ;; interface to rest of the system
+  ; interface to rest of the system
   (define (tag z) (attach-tag 'complex z))
   (put 'add '(complex complex)
        (lambda (z1 z2) (tag (add-complex z1 z2))))
