@@ -47,15 +47,40 @@
             (else (error "Unknown operation -- TABLE" m))))
     dispatch))
 
-(define operation-table (make-table))
-(define get (operation-table 'lookup-proc))
-(define put (operation-table 'insert-proc!))
+(define (lookup key table)
+  ((table 'lookup-proc) key))
 
-; Todo more testing
-(put 1 'hi)
-(put 3 'test)
-(put 5 'world)
-(get 3)
-(get 5)
-(get 1)
+(define (insert! key value table)
+  ((table 'insert-proc!) key value))
+
+(define (fib n)
+  (cond ((= n 0) 0)
+        ((= n 1) 1)
+        (else (+ (fib (- n 1))
+                 (fib (- n 2))))))
+
+(define (memoize f)
+  (let ((table (make-table)))
+    (lambda (x)
+      (let ((previously-computed-result (lookup x table)))
+        (or previously-computed-result
+            (let ((result (f x)))
+              (insert! x result table)
+              result))))))
+
+(define memo-fib
+  (memoize (lambda (n)
+             (cond ((= n 0) 0)
+                   ((= n 1) 1)
+                   (else (+ (memo-fib (- n 1))
+                            (memo-fib (- n 2))))))))
+
+(memo-fib 6)
+
+; This is standard dynamic programming, we do not recompute our solved
+; subproblems. In this case n - 2 and n - 1, hence going from exponential to
+; linear by caching our sub problems in the table.
+
+; No it won't work. fib is defined to call itself and not memo-fib. So the
+; memoization procedure won't be called on the subproblems.
 
