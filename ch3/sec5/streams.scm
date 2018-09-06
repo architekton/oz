@@ -4,7 +4,7 @@
       (cons-stream
         (apply proc (map stream-car argstreams))
         (apply stream-map
-               (cons proc (map stream-cdr argstreams)))))))
+               (cons proc (map stream-cdr argstreams))))))
 
 (define (stream-ref s n)
   (if (= n 0)
@@ -41,6 +41,9 @@
                  result)
           result))))
 
+(define (scale-stream stream factor)
+  (stream-map (lambda (x) (* x factor)) stream))
+
 (define (display-stream s)
   (stream-for-each display-line s))
 
@@ -48,4 +51,18 @@
   (newline)
   (display x))
 
+; helpers
 
+(define (mul-streams s1 s2)
+  (stream-map * s1 s2))
+
+(define (add-streams s1 s2)
+  (stream-map + s1 s2))
+
+(define ones (cons-stream 1 ones))
+
+(define integers
+  (cons-stream 1 (add-streams ones integers)))
+
+(define (integers-starting-from n)
+  (cons-stream n (integers-starting-from (+ 1 n))))
