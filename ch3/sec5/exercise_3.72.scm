@@ -33,12 +33,14 @@
 (define s (weighted-pairs integers integers weight))
 
 (define (r-numbers s)
-  (define (iter prev s)
+  (define (iter pprev prev s)
     (let ((curr (stream-car s)))
-      (if (= (weight prev) (weight curr))
-          (cons-stream prev (iter curr (stream-cdr s)))
-          (iter curr (stream-cdr s)))))
-  (iter (stream-car s) (stream-cdr s)))
+      (if (and (= (weight pprev) (weight pprev))
+               (= (weight prev) (weight curr)))
+
+          (cons-stream pprev (iter prev curr (stream-cdr s)))
+          (iter prev curr (stream-cdr s)))))
+  (iter (stream-car s) (stream-car (stream-cdr s)) (stream-cdr (stream-cdr s))))
 
 (display-stream (r-numbers s))
 
