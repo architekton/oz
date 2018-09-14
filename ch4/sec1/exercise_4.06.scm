@@ -1,10 +1,18 @@
 (define (let? exps) (tagged-list? exps 'let))
 
+(define (let-vars exps)
+  (if (null? exps)
+      '()
+      (cons (caar exps) (let-vars (cdr exps)))))
+
+(define (let-vals exps)
+  (if (null? exps)
+      '()
+      (cons (cadar exps) (let-vars (cdr exps)))))
+
 (define (let->combination exps)
-  (let ((first (cadr exps))
-        (rest (cddr exps)))
-    (cons (make-lambda (car first) (cadr first))
-          (let->combination rest))))
+  (cons (make-lambda (let-vars (cadr exps))  (cddr exps))
+        (let-vals (cadr exps))))
 
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
