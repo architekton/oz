@@ -57,3 +57,9 @@
                 (append u v)))
 
 (scan-out-defines (cddr test))
+
+; c)
+; install in make-procedure, since we only want to call it once.
+
+
+
