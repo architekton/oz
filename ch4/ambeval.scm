@@ -287,6 +287,8 @@
         (list 'integer? integer?)
         (list 'sqrt sqrt)
         (list 'eq? eq?)
+        (list 'display display)
+        (list 'newline newline)
 ;;      more primitives
         ))
 
