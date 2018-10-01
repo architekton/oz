@@ -1,10 +1,16 @@
+(load "../query.scm")
+
+(initialize-data-base microshaft-data-base)
+(query-driver-loop)
+
+
 ; a)
-; (supervisor ?x (Ben Bitdiddle))
+(supervisor ?x (Ben Bitdiddle))
 
 ; b)
-; (job ?x (accounting . ?rest))
+(job ?x (accounting . ?rest))
 
 ; c)
-; (address ?x (Slummerville . ?rest))
+(address ?x (Slummerville . ?rest))
 
 
