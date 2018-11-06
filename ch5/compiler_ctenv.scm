@@ -1,3 +1,44 @@
+; 5.41
+(define (find-variable variable ctenv)
+  (define (iter-frames cnt ctenv)
+    (if (null? ctenv)
+        'not-found
+        (let ((position (find-in-frame (car ctenv))))
+          (if position
+              (list cnt position)
+              (iter-frames (+ cnt 1) (cdr ctenv))))))
+
+  (define (find-in-frame frame)
+    (define (iter cnt frame)
+      (cond ((null? frame) #f)
+            ((eq? (car frame) variable) cnt)
+            (else (iter (+ cnt 1) (cdr frame)))))
+    (iter 0 frame))
+
+  (iter-frames 0 ctenv))
+
+; 5.39
+(define (lexical-address frame offset) (cons frame offset))
+(define (lexical-address-frame lexical-address) (car lexical-address))
+(define (lexical-address-offset lexical-address) (cdr lexical-address))
+
+(define (lexical-address-lookup lexical-address run-time-environment)
+  (let ((value (cdr
+                 (list-ref
+                   (list-ref run-time-environment
+                             (lexical-address-frame lexical-address))
+                   (lexical-address-offset lexical-address)))))
+    (if (eq? value '*unassigned*)
+        (error "Unassigned variable! -- LEXICAL-ADDRESS-LOOKUP" lexical-address)
+        value)))
+
+(define (lexical-address-set! lexical-address run-time-environment value)
+  (let ((pair ((list-ref
+                 (list-ref run-time-environment
+                           (lexical-address-frame lexical-address))
+                 (lexical-address-offset lexical-address)))))
+    (set-cdr! pair value)))
+
 (define (compile exp target linkage ctenv)
   (cond ((self-evaluating? exp)
          (compile-self-evaluating exp target linkage))
@@ -61,26 +102,40 @@
                                                `((assign ,target (const ,(text-of-quotation exp)))))))
 
 (define (compile-variable exp target linkage ctenv)
-  (end-with-linkage linkage
-                    (make-instruction-sequence '(env) (list target)
-                                               `((assign ,target
-                                                         (op lookup-variable-value)
-                                                         (const ,exp)
-                                                         (reg env))))))
+  (let ((lexical-addr (find-variable exp ctenv)))
+    (end-with-linkage linkage
+                      (make-instruction-sequence
+                        '(env) (list target)
+                        (if (eq? lexical-addr 'not-found)
+                            `((assign ,target
+                                      (op lookup-variable-value)
+                                      (const ,exp)
+                                      (reg env)))
+                            `((assign ,target
+                                      (op lexical-address-lookup)
+                                      (const ,lexical-addr)
+                                      (reg env))))))))
 
 (define (compile-assignment exp target linkage ctenv)
   (let ((var (assignment-variable exp))
-        (get-value-code
-          (compile (assignment-value exp) 'val 'next ctenv)))
-    (end-with-linkage linkage
-                      (preserving '(env)
-                                  get-value-code
-                                  (make-instruction-sequence '(env val) (list target)
-                                                             `((perform (op set-variable-value!)
-                                                                        (const ,var)
-                                                                        (reg val)
-                                                                        (reg env))
-                                                               (assign ,target (const ok))))))))
+        (get-value-code (compile (assignment-value exp) 'val 'next ctenv)))
+    (let ((lexical-addr (find-variable var ctenv)))
+      (end-with-linkage linkage
+                        (preserving '(env)
+                                    get-value-code
+                                    (make-instruction-sequence
+                                      '(env val) (list target)
+                                      (if (eq? lexical-addr 'not-found)
+                                          `((perform (op set-variable-value!)
+                                                     (const ,var)
+                                                     (reg val)
+                                                     (reg env))
+                                            (assign ,target (const ok)))
+                                          `((perform (op lexical-address-set!)
+                                                     (const ,lexical-addr)
+                                                     (reg val)
+                                                     (reg env))
+                                            (assign ,target (const ok))))))))))
 
 (define (compile-definition exp target linkage ctenv)
   (let ((var (definition-variable exp))
@@ -163,7 +218,7 @@
 (define (extend-ctenv frame ctenv)
   (cons frame ctenv))
 
-(define (compile-lambda-body exp proc-entry cenv)
+(define (compile-lambda-body exp proc-entry ctenv)
   (let ((formals (lambda-parameters exp)))
     (append-instruction-sequences
       (make-instruction-sequence '(env proc argl) '(env)
@@ -175,7 +230,7 @@
                                             (reg argl)
                                             (reg env))))
       (compile-sequence (lambda-body exp) 'val 'return
-                        (extend-ctenv cenv formals)))))
+                        (extend-ctenv formals ctenv)))))
 
 
 ;;;SECTION 5.5.3
