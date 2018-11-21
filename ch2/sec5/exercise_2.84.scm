@@ -21,9 +21,7 @@
       (if proc
           (apply proc (map contents args))
           (if (= (length args) 2)
-              (let ((type1 (car type-tags))
-                    (type2 (cadr type-tags))
-                    (a1 (car args))
+              (let ((a1 (car args))
                     (a2 (cadr args)))
                 (cond ((raise-to-type a1 a2)
                        (apply-generic op (raise-to-type a1 a2) a2))
