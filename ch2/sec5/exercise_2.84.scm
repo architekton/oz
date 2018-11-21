@@ -1,11 +1,18 @@
 (load "common.scm")
+(load "exercise_2.83.scm")
 
-(define (raise-to-type type1 type2)
-  (if (equal? type1 type2)
-      type1
-      (let ((raised-type1) (raise type1))
-        (if raised-type1
-            (raise-to-type raised-type1 type2)
+(define highest-type 'complex)
+
+(define (raise-to-type datum-from datum-to)
+  (let* ((type1 (type-tag datum-from))
+         (type2 (type-tag datum-to)))
+    (if (equal? type1 type2)
+        datum-from
+        (if (not (eq? type1 highest-type))
+            (let ((raised (raise datum-from)))
+              (if raised
+                  (raise-to-type raised datum-to)
+                  #f))
             #f))))
 
 (define (apply-generic op . args)
@@ -18,14 +25,20 @@
                     (type2 (cadr type-tags))
                     (a1 (car args))
                     (a2 (cadr args)))
-                  (cond ((raise-to-type type1 type2)
-                          (apply-generic op (raise-to-type a1 a2) a2))
-                        ((raise-to-type type2 type1)
-                          (apply-generic op a1 (raise-to-type a2 a1))
-                        (else
-                          (error "No method for these types"
-                                 (list op type-tags))))))
+                (cond ((raise-to-type a1 a2)
+                       (apply-generic op (raise-to-type a1 a2) a2))
+                      ((raise-to-type a2 a1)
+                       (apply-generic op a1 (raise-to-type a2 a1)))
+                      (else
+                        (error "No method for these types"
+                               (list op type-tags)))))
               (error "No method for these types"
                      (list op type-tags)))))))
 
 
+(define d1 (make-rational 4 1))
+(define d2 (make-scheme-number 2))
+(raise-to-type d1 d2)
+(raise-to-type d2 d1)
+
+(add d1 d2)
