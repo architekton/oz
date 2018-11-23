@@ -117,6 +117,7 @@
 (define (mul x y) (apply-generic 'mul x y))
 (define (div x y) (apply-generic 'div x y))
 (define (=zero? x) (apply-generic '=zero? x))
+(define (negate x) (apply-generic 'negate x))
 
 ; Generic selectors
 (define (real-part z) (apply-generic 'real-part z))
@@ -143,6 +144,7 @@
   (put 'raise '(scheme-number)
        (lambda (x) (make-rational x 1)))
   (put '=zero? '(scheme-number) (lambda (x) (= 0 x)))
+  (put 'negate '(scheme-number) (lambda (x) (- 0 x)))
   'done)
 
 (define (install-rectangular-package)
@@ -239,6 +241,7 @@
   (put 'project 'rational
        (lambda (x) (make-scheme-number (round (/ (numer x) (denom x))))))
   (put '=zero? '(rational) (lambda (x) (= 0 (numer x))))
+  (put 'negate '(rational) (lambda (x) (tag (make-rat (- 0 (numer x)) (denom x)))))
   'done)
 
 ;------
@@ -286,6 +289,10 @@
                           (denominator rational)))))
   (put '=zero? '(complex)
        (lambda (x) (and (= 0 (real-part x)) (= 0 (imag-part x)))))
+  (put 'negate '(comeplex)
+       (lambda (x) (tag (make-from-real-imag
+                          (- 0 (real-part x))
+                          (- 0 (imag-part x))))))
   'done)
 
 ; Constructors

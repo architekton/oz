@@ -78,11 +78,26 @@
             (mul-term-by-all-terms t1 (rest-terms L))))))
 
   ; zero?
-    (define (zero-terms? termlist)
-      (if (empty-termlist? termlist)
-          '#t
-          (and (=zero? (coeff (first-term termlist)))
-               (zero-terms? (rest-terms termlist)))))
+  (define (zero-terms? termlist)
+    (if (empty-termlist? termlist)
+        '#t
+        (and (=zero? (coeff (first-term termlist)))
+             (zero-terms? (rest-terms termlist)))))
+
+  ; sub - add the negation of every term of the second polynomial to the first
+  (define (sub-poly p1 p2)
+    (add-poly p1 (negate-poly p2)))
+
+  (define (negate-poly p)
+    (make-poly (variable p) (negate-terms (term-list p))))
+
+  (define (negate-terms termlist)
+    (if (empty-termlist? termlist)
+        (the-empty-termlist)
+        (adjoin-term (make-term
+                       (order (first-term termlist))
+                       (negate (coeff (first-term termlist))))
+                     (negate-terms (rest-terms termlist)))))
 
   ; interface to rest of the system
   (define (tag p) (attach-tag 'polynomial p))
@@ -90,9 +105,12 @@
        (lambda (p1 p2) (tag (add-poly p1 p2))))
   (put 'mul '(polynomial polynomial)
        (lambda (p1 p2) (tag (mul-poly p1 p2))))
+  (put 'sub '(polynomial polynomial)
+       (lambda (p1 p2) (tag (sub-poly p1 p2))))
   (put 'make 'polynomial
        (lambda (var terms) (tag (make-poly var terms))))
-  (put '=zero? '(polynomial) (lambda (x) (zero-terms? (term-list x))))
+  (put '=zero? '(polynomial) (lambda (p) (zero-terms? (term-list p))))
+  (put 'negate '(polynomial) (lambda (p) (tag (negate-poly p))))
   'done)
 
 (install-polynomial-package)
